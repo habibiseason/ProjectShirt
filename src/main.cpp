@@ -5,10 +5,10 @@
 
 #define EAP_USERNAME "" // Username
 #define EAP_PASSWORD "" // Password
-#define WEB_URL "http://info.cern.ch/"
+#define WEB_URL "http://145.52.157.191/wearableShirt_WebAPI/rest.php"
 
-const char* ssid = ""; // your ssid
-const bool useWpa = false;
+const char* ssid = "eduroam"; // your ssid
+const bool useWpa = true;
 HTTPClient http;
 
 void connect();
@@ -27,8 +27,9 @@ void loop() {
   // Send get request
   if(WiFi.status() == WL_CONNECTED) {
     http.begin(WEB_URL);
+    http.addHeader("Content-Type", "application/x-www-form-urlencoded");
     long currentTime = millis();
-    int code = http.GET();
+    int code = http.POST("sensor_data=hey");
     if(code == 200) { // Request success
       String body = http.getString();
       Serial.println(body);

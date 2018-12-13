@@ -10,7 +10,7 @@ const float amp = 1.2;
 int buf[numSamples];
 int bufferIndex = 0;
 
-void setup() {
+void d_setup() {
     Serial.begin(9600);
     delay(10);
 
@@ -22,7 +22,7 @@ void setup() {
     digitalWrite(MOTOR_2, LOW);
 }
 
-void loop() {
+void d_loop() {
     int val = analogRead(STRETCHBAND);
     buf[bufferIndex] = val;
     if(++bufferIndex >= numSamples) bufferIndex = 0;

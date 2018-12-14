@@ -3,33 +3,46 @@
 #include <HTTPClient.h>
 #include <esp_wpa2.h>
 
-#define EAP_USERNAME "" // Username
+#define EAP_USERNAME "18129048@student.hhs.nl" // Username
 #define EAP_PASSWORD "" // Password
-#define WEB_URL "http://145.52.157.191/wearableShirt_WebAPI/rest.php"
+#define WEB_URL "http://kinetic-data.dynu.net/values.php"
+
+#define STRETCHBAND 32
+
 
 const char* ssid = "eduroam"; // your ssid
 const bool useWpa = true;
 HTTPClient http;
 
+const int numSamples = 20;
+int buf[numSamples];
+int bufferIndex = 0;
+
 void connect();
 void disconnect();
+int readStretch();
 
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(9600);
   delay(10);
   Serial.println();
   Serial.println(ssid);
+
+  pinMode(STRETCHBAND, INPUT);
   
   connect();
 }
 
 void loop() {
+  int val = readStretch();
+  
   // Send get request
   if(WiFi.status() == WL_CONNECTED) {
     http.begin(WEB_URL);
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
     long currentTime = millis();
-    int code = http.POST("sensor_data=hey");
+    String body = "value="+String(val);
+    int code = http.POST(body);
     if(code == 200) { // Request success
       String body = http.getString();
       Serial.println(body);
@@ -41,6 +54,8 @@ void loop() {
   } else {
     connect();
   }
+
+  delay(500);
 }
 
 void connect() {
@@ -71,4 +86,18 @@ void disconnect() {
   while(WiFi.status() == WL_CONNECTED) {}
   Serial.println("Disconnected");
   delay(1000);
+}
+
+int readStretch() {
+    int val = analogRead(STRETCHBAND);
+    buf[bufferIndex] = val;
+    if(++bufferIndex >= numSamples) bufferIndex = 0;
+
+    float output = 0;
+    for(int i=0; i < numSamples; i++) {
+    output += buf[i];
+    }
+    output /= numSamples;
+
+    return output;
 }

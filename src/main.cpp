@@ -3,20 +3,21 @@
 #include <HTTPClient.h>
 #include <esp_wpa2.h>
 
-#define EAP_USERNAME "18129048@student.hhs.nl" // Username
-#define EAP_PASSWORD "" // Password
+#define EAP_USERNAME "" // Username
+#define EAP_PASSWORD "RASM46392" // Password
 #define WEB_URL "http://kinetic-data.dynu.net/values.php"
 
-#define STRETCHBAND 32
+#define STRETCHBAND 23
 
-
-const char* ssid = "eduroam"; // your ssid
-const bool useWpa = true;
+const char* ssid = "ZPARK2,4wk"; // your ssid
+const bool useWpa = false;
 HTTPClient http;
 
 const int numSamples = 20;
 int buf[numSamples];
 int bufferIndex = 0;
+
+const int stretchbandValue = 5;
 
 void connect();
 void disconnect();
@@ -28,25 +29,46 @@ void setup() {
   Serial.println();
   Serial.println(ssid);
 
-  pinMode(STRETCHBAND, INPUT);
+  //pinMode(STRETCHBAND, INPUT);
   
   connect();
 }
 
 void loop() {
-  int val = readStretch();
+  //int val = readStretch();
   
   // Send get request
   if(WiFi.status() == WL_CONNECTED) {
     http.begin(WEB_URL);
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
     long currentTime = millis();
-    String body = "value="+String(val);
+    
+    // Stretchband
+    String body = "type=stretchband&timestamp="+String(millis())+"&value=34";
     int code = http.POST(body);
+
+    // IMU
+    body = "type=IMU&imu_id=1&timestamp="+String(millis())+"&x=3&y=2&z=9";
+    code = http.POST(body);
+    body = "type=IMU&imu_id=2&timestamp="+String(millis())+"&x=3&y=2&z=9";
+    code = http.POST(body);
+
+    // Capacitive
+    body = "type=capacitive&capacitive_id=1&timestamp="+String(millis())+"&value=23";
+    code = http.POST(body);
+    body = "type=capacitive&capacitive_id=2&timestamp="+String(millis())+"&value=23";
+    code = http.POST(body);
+
+    // Gsr
+    body = "type=gsr&timestamp="+String(millis())+"&value=23";
+    code = http.POST(body);
+    body = "type=gsr&timestamp="+String(millis())+"&value=23";
+    code = http.POST(body);
+
+    Serial.println(code);
     if(code == 200) { // Request success
       String body = http.getString();
       Serial.println(body);
-      Serial.println(millis() - currentTime);
       http.end();
       //disconnect();
     }

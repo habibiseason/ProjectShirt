@@ -4,12 +4,12 @@
 #include <esp_wpa2.h>
 
 #define EAP_USERNAME "" // Username
-#define EAP_PASSWORD "RASM46392" // Password
+#define EAP_PASSWORD "" // Password
 #define WEB_URL "http://kinetic-data.dynu.net/values.php"
 
 #define STRETCHBAND 23
 
-const char* ssid = "ZPARK2,4wk"; // your ssid
+const char* ssid = ""; // your ssid
 const bool useWpa = false;
 HTTPClient http;
 

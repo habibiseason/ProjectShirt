@@ -3,13 +3,14 @@
 #include <HTTPClient.h>
 #include <esp_wpa2.h>
 
-#define EAP_USERNAME "" // Username
-#define EAP_PASSWORD "" // Password
+#define EAP_USERNAME "18129048@student.hhs.nl" // Username
+#define EAP_PASSWORD "RASM46392" // Password
 #define WEB_URL "http://kinetic-data.dynu.net/values.php"
+#define REGISTER_URL "http://kinetic-data.dynu.net/announce.php"
 
 #define STRETCHBAND 23
 
-const char* ssid = ""; // your ssid
+const char* ssid = "ZPARK2,4wk"; // your ssid
 const bool useWpa = false;
 HTTPClient http;
 
@@ -18,6 +19,8 @@ int buf[numSamples];
 int bufferIndex = 0;
 
 const int stretchbandValue = 5;
+
+char macAddress[18] = {0};
 
 void connect();
 void disconnect();
@@ -30,7 +33,9 @@ void setup() {
   Serial.println(ssid);
 
   //pinMode(STRETCHBAND, INPUT);
-  
+  uint8_t baseMac[8];
+  esp_read_mac(baseMac, ESP_MAC_WIFI_STA);
+	sprintf(macAddress, "%02X:%02X:%02X:%02X:%02X:%02X", baseMac[0], baseMac[1], baseMac[2], baseMac[3], baseMac[4], baseMac[5]);
   connect();
 }
 
@@ -101,6 +106,16 @@ void connect() {
   Serial.println("");
   Serial.println("IP address: ");
   Serial.println(WiFi.localIP());
+
+  // Register device
+  http.begin(REGISTER_URL);
+  http.addHeader("Content-Type", "application/x-www-form-urlencoded");
+  String body = "mac="+String(macAddress);
+  int code = http.POST(body);
+  Serial.println(body);
+  String res = http.getString();
+  Serial.println(code);
+  Serial.println(res);
 }
 
 void disconnect() {

@@ -4,14 +4,14 @@
 #include <esp_wpa2.h>
 
 #define EAP_USERNAME "18129048@student.hhs.nl" // Username
-#define EAP_PASSWORD "RASM46392" // Password
+#define EAP_PASSWORD "!677u59J6" // Password
 #define WEB_URL "http://kinetic-data.dynu.net/values.php"
 #define REGISTER_URL "http://kinetic-data.dynu.net/announce.php"
 
 #define STRETCHBAND 23
 
-const char* ssid = "ZPARK2,4wk"; // your ssid
-const bool useWpa = false;
+const char* ssid = "eduroam"; // your ssid
+const bool useWpa = true;
 HTTPClient http;
 
 const int numSamples = 20;
@@ -75,14 +75,11 @@ void loop() {
       String body = http.getString();
       Serial.println(body);
       http.end();
-      //disconnect();
     }
-    delay(2000);
+    delay(500);
   } else {
     connect();
   }
-
-  delay(500);
 }
 
 void connect() {

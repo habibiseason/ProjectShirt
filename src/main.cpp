@@ -4,7 +4,7 @@
 #include <esp_wpa2.h>
 
 #define EAP_USERNAME "18129048@student.hhs.nl" // Username
-#define EAP_PASSWORD "!677u59J6" // Password
+#define EAP_PASSWORD "" // Password
 #define WEB_URL "http://kinetic-data.dynu.net/values.php"
 #define REGISTER_URL "http://kinetic-data.dynu.net/announce.php"
 

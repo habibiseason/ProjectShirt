@@ -5,7 +5,7 @@
 #include <Wire.h>
 
 #define EAP_USERNAME "15057070@student.hhs.nl" // Username
-#define EAP_PASSWORD "zrySIhGi" // Password
+#define EAP_PASSWORD "" // Password
 #define WEB_URL "http://kinetic-data.dynu.net/values.php"
 #define REGISTER_URL "http://kinetic-data.dynu.net/announce.php"
 

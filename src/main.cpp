@@ -1,6 +1,8 @@
 #include <Arduino.h>
 #include <WiFi.h>
 
+#define LED 2
+
 const char* ssid = "KineticAnalysis";
 const char* password = "password";
 
@@ -17,10 +19,13 @@ void handleResponse(WiFiClient client);
 void displayWebpage(WiFiClient client);
 void handleRequest(WiFiClient client);
 String filterChar(String data);
+void blink();
 
 void setup() {
   Serial.begin(9600);
   delay(100);
+
+  pinMode(LED, OUTPUT);
   
   server.begin(80);
 
@@ -35,6 +40,8 @@ void setup() {
 
 void loop() {
   if(!isConfigured()) {
+    blink();
+
     WiFiClient client = server.available();
     if(client) {
       while(client.connected()) {
@@ -116,4 +123,11 @@ void displayWebpage(WiFiClient client) {
   client.println("<input type='submit' value='Save' />");
   client.println("</form>");
   client.println("</body></html>");
+}
+
+void blink() {
+  digitalWrite(LED, HIGH);
+  delay(400);
+  digitalWrite(LED, LOW);
+  delay(400);
 }

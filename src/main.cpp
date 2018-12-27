@@ -67,6 +67,7 @@ void printIMU_data();
 void wakeupIMU(byte address);
 void readIMU1();
 void readIMU2();
+int readStretch();
 
 void setup() {
   Serial.begin(9600);
@@ -111,7 +112,7 @@ void setup() {
 void readSensors(){
     readIMU1();
     readIMU2();
-    resisitveValue = analogRead(RESISTIVE_STRETCHBAND);
+    resisitveValue = readStretch();
     gsrValue = analogRead(GSR);
 }
 
@@ -343,6 +344,20 @@ void displayWebpage(WiFiClient client) {
   client.println("<input type='submit' value='Save' />");
   client.println("</form>");
   client.println("</body></html>");
+}
+
+int readStretch() {
+    int val = analogRead(RESISTIVE_STRETCHBAND);
+    buf[bufferIndex] = val;
+    if(++bufferIndex >= numSamples) bufferIndex = 0;
+
+    float output = 0;
+    for(int i=0; i < numSamples; i++) {
+    output += buf[i];
+    }
+    output /= numSamples;
+
+    return output;
 }
 
 void blink() {

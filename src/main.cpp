@@ -323,6 +323,7 @@ void handleRequest(WiFiClient client) {
       send_password += request[i];
     }
     send_ssid.replace("%2C",",");
+    send_ssid.replace("+", " ");
     externalWifiId = send_ssid;
     externalWifiPassword = send_password;
   }

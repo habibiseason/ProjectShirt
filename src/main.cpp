@@ -4,7 +4,6 @@
 #include <esp_wpa2.h>
 #include <Wire.h>
 
-#define EAP_USERNAME "15057070@student.hhs.nl" // Username
 #define WEB_URL "http://kinetic-data.dynu.net/values.php"
 #define REGISTER_URL "http://kinetic-data.dynu.net/announce.php"
 
@@ -24,7 +23,7 @@
 const char* ssid = "KineticAnalysis";
 const char* password = "password";
 
-const bool useWpa = false;
+const bool useWpa = true;
 HTTPClient http;
 
 const int numSamples = 20;
@@ -37,7 +36,8 @@ WiFiServer server;
 String request;
 String requestLine;
 
-String externalWifiId = "";
+String externalWifiId = "eduroam";
+String externalUsername = "";
 String externalWifiPassword = "";
 IPAddress ip;
 
@@ -180,6 +180,7 @@ void loop() {
         WiFi.softAPdisconnect();
 
         Serial.println(externalWifiId);
+        Serial.println(externalUsername);
         Serial.println(externalWifiPassword);
       }
     }
@@ -200,8 +201,8 @@ void connect() {
   WiFi.disconnect(true);
   if(useWpa) {
     WiFi.mode(WIFI_STA);
-    esp_wifi_sta_wpa2_ent_set_identity((uint8_t *)EAP_USERNAME, strlen(EAP_USERNAME));
-    esp_wifi_sta_wpa2_ent_set_username((uint8_t *)EAP_USERNAME, strlen(EAP_USERNAME));
+    esp_wifi_sta_wpa2_ent_set_identity((uint8_t *)externalUsername.c_str(), strlen(externalUsername.c_str()));
+    esp_wifi_sta_wpa2_ent_set_username((uint8_t *)externalUsername.c_str(), strlen(externalUsername.c_str()));
     esp_wifi_sta_wpa2_ent_set_password((uint8_t *)externalWifiPassword.c_str(), strlen(externalWifiPassword.c_str()));
     esp_wpa2_config_t config = WPA2_CONFIG_INIT_DEFAULT();
     esp_wifi_sta_wpa2_ent_enable(&config);
@@ -323,9 +324,18 @@ void handleRequest(WiFiClient client) {
       if(request[i] == ' ') break;
       send_password += request[i];
     }
+    // Converting
     send_ssid.replace("%2C",",");
     send_ssid.replace("+", " ");
-    externalWifiId = send_ssid;
+    send_ssid.replace("%40", "@");
+    send_ssid.replace("%21", "!");
+    send_password.replace("%2C", ",");
+    send_password.replace("+", " ");
+    send_password.replace("%40", "@");
+    send_password.replace("%21", "!");
+
+    //externalWifiId = send_ssid;
+    externalUsername = send_ssid;
     externalWifiPassword = send_password;
   }
 }
@@ -339,7 +349,7 @@ void displayWebpage(WiFiClient client) {
   client.println("<body>");
   client.println("<h3>Wearable sensor shirt Configuration</h3>");
   client.println("<form action='/save' method='GET'>");
-  client.println("<input type='text' name='ssid' placeholder='ssid' /> <br/>");
+  client.println("<input type='text' name='ssid' placeholder='name' /> <br/>");
   client.println("<input type='password' name='password' placeholder='password' /> <br/>");
   client.println("<input type='submit' value='Save' />");
   client.println("</form>");

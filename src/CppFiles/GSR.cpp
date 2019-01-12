@@ -6,7 +6,7 @@ GSR::GSR(string n, int pin): BasicAnalogSensor(n, pin)
 }
 
 int GSR::getValue(){
-	//analogRead(getAnalogPin());
-	cout << "GSR data incomming from pin " << getAnalogPin() << endl;
-	return 5;
+	int value = analogRead(getAnalogPin());
+	cout << "GSR data incomming from pin " << getAnalogPin() << ": " << value << endl;
+	return value;
 }

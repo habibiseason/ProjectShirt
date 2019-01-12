@@ -8,7 +8,7 @@ ResistiveStretchBand::ResistiveStretchBand(string n, int pin): BasicAnalogSensor
 }
 
 int ResistiveStretchBand::getValue() {
-	//analogRead(getAnalogPin());
-	cout << "Resisitve stretch band data incomming from pin " << getAnalogPin() << endl;
-	return 5;
+	int value = analogRead(getAnalogPin());
+	cout << "Resisitve stretch band data incomming from pin " << getAnalogPin() << ": "<< value << endl;
+	return value;
 }

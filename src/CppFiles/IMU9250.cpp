@@ -3,7 +3,7 @@
 
 IMU9250::IMU9250(string n, uint8_t add): I2C_sensor(n, add), i2cAdd(add)
 {
-	cout<<"Initializing IMU with address: " << i2cAdd << endl;
+  cout<<"Initializing IMU with address: " << (int)i2cAdd << endl;
 	initSensor();
 }
 
@@ -18,11 +18,11 @@ void IMU9250::initSensor(){
 int IMU9250::getValue() {
   int16_t AcX1, AcY1, AcZ1, Tmp1, GyX1, GyY1, GyZ1;
   uint8_t i = 104;
-  Wire.beginTransmission(i);
+  Wire.beginTransmission(i2cAdd);
   Wire.write(0x3B);  // starting with register 0x3B (ACCEL_XOUT_H)
   Wire.endTransmission();
   
-  Wire.requestFrom(i, 14, true); // request a total of 14 registers
+  Wire.requestFrom(i2cAdd, 14, true); // request a total of 14 registers
     AcX1 = Wire.read() << 8 | Wire.read(); // 0x3B (ACCEL_XOUT_H) & 0x3C (ACCEL_XOUT_L)
     AcY1 = Wire.read() << 8 | Wire.read(); // 0x3D (ACCEL_YOUT_H) & 0x3E (ACCEL_YOUT_L)
     AcZ1 = Wire.read() << 8 | Wire.read(); // 0x3F (ACCEL_ZOUT_H) & 0x40 (ACCEL_ZOUT_L)
@@ -31,7 +31,7 @@ int IMU9250::getValue() {
     GyY1 = Wire.read() << 8 | Wire.read(); // 0x45 (GYRO_YOUT_H) & 0x46 (GYRO_YOUT_L)
     GyZ1 = Wire.read() << 8 | Wire.read(); // 0x47 (GYRO_ZOUT_H) & 0x48 (GYRO_ZOUT_L)
 
-  Serial.print("IMU1: ");
+  cout<<getName()<< ":"<<endl;
   Serial.print("GyX = "); Serial.print(GyX1);
   Serial.print("\tGyY = "); Serial.print(GyY1);
   Serial.print("\tGyZ = "); Serial.println(GyZ1);

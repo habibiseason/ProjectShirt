@@ -14,7 +14,7 @@ void BasicAnalogSensor::initSensor() {
 
 int BasicAnalogSensor::getValue() {
 	int value = analogRead(analogPin);
-	cout << "Basic analog sensor data incomming...\n";
+	cout << "Basic analog sensor data incomming from pin" << getAnalogPin() << ": " << value <<endl;
 	return value;
 }
 

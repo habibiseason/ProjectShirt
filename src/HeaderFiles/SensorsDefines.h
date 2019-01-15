@@ -12,6 +12,9 @@
 
 #include "DigitalControlActuator.h"
 
+#include "WifiConnection.h"
+#include "WebConfig.h"
+
 //pin defines
 #define GSR_PIN   36
 #define RSB_PIN   39

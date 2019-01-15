@@ -8,6 +8,9 @@ int RSB_value = 0;
 
 CommonInterface CI;
 
+//setting up wifi connections
+WifiConnection *conn = new WifiConnection("WIFI_SSID", "PASSWORD");
+WebConfig *webConf = new WebConfig(conn);
 
 
 void setup() {
@@ -28,9 +31,9 @@ void setup() {
 
   CI.listAllSensors();
   CI.listAllActuators();
-
-	//((DigitalControlActuator*)CI.getActuator("VibMotor1"))->power(OFF);
-	//((DigitalControlActuator*)CI.getActuator("VibMotor2"))->power(OFF);
+  
+  webConf->startBlocking();
+  conn->connect();
   
   Serial.println("Starting program\n");
 }

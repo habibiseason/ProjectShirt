@@ -9,7 +9,7 @@ int RSB_value = 0;
 CommonInterface CI;
 
 //setting up wifi connections
-WebConfig *webConf = new WebConfig("kineticAnalysis", "password");
+WebConfig *webConf = new WebConfig("Yobobobo", "password");
 
 
 void setup() {

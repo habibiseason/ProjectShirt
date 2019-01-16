@@ -2,7 +2,7 @@
 #define WEB_CONFIG_H
 
 #define DEFAULT_PASSWORD	"Admin123"
-#define AP_IP				192,168,5,1
+#define AP_IP				192,168,1,1
 #define AP_MASK				255,255,255,0
 
 #include <Arduino.h>
@@ -21,12 +21,14 @@ public:
 	virtual ~WebConfig() {}
 
 	virtual WifiConnection* startAP();
-	virtual void waitForInput();
+	virtual void waitForConnection();
+
+	virtual void replaceChar();
 
 	virtual bool isConfigured();
 	virtual void handleResponse(WiFiClient client);
 	virtual void handleRequest(WiFiClient client);
-	virtual void displayWebpage(WiFiClient client);
+	virtual void displayWebpage(WiFiClient client, bool connectionStat);
 
 private:
     WifiConnection *WifiConn;
@@ -42,6 +44,8 @@ private:
 	IPAddress ip;
 	String request;
 	String requestLine;
+
+	bool _connection;
 };
 
 

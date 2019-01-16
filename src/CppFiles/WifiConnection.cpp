@@ -1,6 +1,6 @@
 #include "HeaderFiles/WifiConnection.h"
 
-WifiConnection::WifiConnection(string id, string pw): ssid(id), password(pw){
+WifiConnection::WifiConnection(String id, String pw): ssid(id), password(pw){
 
 }
 

@@ -1,7 +1,7 @@
 #include "HeaderFiles/WPAconnection.h"
 
 
-WPAconnection::WPAconnection(string id, string pw, string usrName): WifiConnection(id, pw), userName(usrName){
+WPAconnection::WPAconnection(String id, String pw, String usrName): WifiConnection(id, pw), userName(usrName){
 
 }
 

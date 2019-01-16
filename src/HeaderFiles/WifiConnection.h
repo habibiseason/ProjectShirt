@@ -11,17 +11,17 @@ using namespace std;
 class WifiConnection
 {
 public:
-	WifiConnection(string id, string pw);
+	WifiConnection(String id, String pw);
 	virtual ~WifiConnection() {}
 
 	virtual void connect();
     virtual void disconnect();
 
-    virtual string getSsid() { return ssid; }
-    virtual string getPassword() { return password; }
+    virtual String getSsid() { return ssid; }
+    virtual String getPassword() { return password; }
 
 private:
-    string ssid, password;
+    String ssid, password;
 };
 
 #endif // WIFI_CONNECTION_H

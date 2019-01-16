@@ -9,8 +9,7 @@ int RSB_value = 0;
 CommonInterface CI;
 
 //setting up wifi connections
-WifiConnection *conn = new WifiConnection("WIFI_SSID", "PASSWORD");
-WebConfig *webConf = new WebConfig(conn);
+WebConfig *webConf = new WebConfig("kineticAnalysis", "password");
 
 
 void setup() {
@@ -32,10 +31,11 @@ void setup() {
   CI.listAllSensors();
   CI.listAllActuators();
   
-  webConf->startBlocking();
-  conn->connect();
-  
   Serial.println("Starting program\n");
+
+  //Start web configuration and store acquired connection in Common Interface
+  CI.addConnection(webConf->startAP());
+  Serial.print("Connected to ");Serial.println(CI.getConnection()->getSsid());
 }
 
 void loop() {

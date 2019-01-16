@@ -7,14 +7,14 @@
 class WPAconnection : public WifiConnection
 {
 public:
-	WPAconnection(string id, string pw, string usrName);
+	WPAconnection(String id, String pw, String usrName);
 	virtual ~WPAconnection() {}
 
 	virtual void connect();
     virtual void disconnect();
 
 private:
-    string userName;
+    String userName;
 };
 
 #endif // WPA_CONNECTION_H

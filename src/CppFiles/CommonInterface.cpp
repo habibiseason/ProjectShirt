@@ -68,3 +68,18 @@ void CommonInterface::listAllActuators() {
 		cout << (*it_act)->getName() << endl;
 	}
 }
+
+
+//------------------------Wifi connection-------------------->>
+
+void CommonInterface::addConnection(WifiConnection* conn){
+	connection = conn;
+}
+
+void CommonInterface::removeConnection(){
+	connection = NULL;
+}
+
+WifiConnection* CommonInterface::getConnection(){
+	return connection;
+}

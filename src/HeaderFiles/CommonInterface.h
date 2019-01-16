@@ -3,6 +3,7 @@
 
 #include "Sensor.h"
 #include "Actuator.h"
+#include "WifiConnection.h"
 #include <list>
 
 class CommonInterface
@@ -21,6 +22,9 @@ public:
 	virtual Actuator* getActuator(string actuatorName);
 	virtual void listAllActuators();
 
+	virtual void addConnection(WifiConnection* conn);
+	virtual void removeConnection();
+	virtual WifiConnection* getConnection();
 
 private:
 	list<Sensor*> sensors;
@@ -28,6 +32,8 @@ private:
 
 	list<Actuator*> actuators;
 	list<Actuator*>::iterator it_act;
+
+	WifiConnection* connection;
 };
 
 #endif // !COMMON_INTERFACE_H

@@ -1,20 +1,21 @@
 #ifndef WPA_CONNECTION_H
 #define WPA_CONNECTION_H
 
+#include <esp_wpa2.h>   
 #include "WifiConnection.h"
 
 
 class WPAconnection : public WifiConnection
 {
 public:
-	WPAconnection(String id, String pw, String usrName);
+	WPAconnection(String id, String pw, String EAP_USERNAME);
 	virtual ~WPAconnection() {}
 
 	virtual void connect();
-    virtual void disconnect();
+    //virtual void disconnect();
 
 private:
-    String userName;
+    String EAP_USERNAME;
 };
 
 #endif // WPA_CONNECTION_H

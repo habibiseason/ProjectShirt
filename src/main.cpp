@@ -36,10 +36,15 @@ void setup() {
   //Start web configuration and store acquired connection in Common Interface
   CI.addConnection(webConf->startAP());
   Serial.print("Connected to ");Serial.println(CI.getConnection()->getSsid());
+  CI.getConnection()->connect();
 }
 
 void loop() {
-  
+
+
+  CI.getConnection()->sendAllSensorData();
+  delay(1000);
+  /*
   CI.getSensor("CSB1")->getValue();
   CI.getSensor("IMU1")->getValue();
   CI.getSensor("IMU2")->getValue();
@@ -52,7 +57,6 @@ void loop() {
   }else{
     ((DigitalControlActuator*)CI.getActuator("HearthBeatLED"))->power(OFF);
     ((DigitalControlActuator*)CI.getActuator("VibMotor2"))->power(OFF);
-  }
+  }*/
   
-  delay(50);
 }

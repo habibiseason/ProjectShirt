@@ -10,6 +10,7 @@ WebConfig::WebConfig(char* id, char* pass): ssid(id), password(pass){
     
     externalWifiId ="";
     externalWifiPassword = "";
+    externalUsername = "";
 }
 
 WifiConnection* WebConfig::startAP(){
@@ -20,6 +21,7 @@ WifiConnection* WebConfig::startAP(){
     IPAddress Ip(AP_IP);
     IPAddress NMask(AP_MASK);
     WiFi.softAPConfig(Ip, Ip, NMask);
+    
 
     ip = WiFi.softAPIP();
     server.begin();
@@ -64,7 +66,17 @@ void WebConfig::waitForInput(){
 
                 Serial.println(externalWifiId);
                 Serial.println(externalWifiPassword);
-                WifiConn = new WifiConnection(externalWifiId, externalWifiPassword);
+                Serial.println(externalUsername);
+
+                //check for WPA or normal connection
+                if (externalUsername.length() == 0){
+                    Serial.print("USername size = "); Serial.println(externalUsername.length());
+                    WifiConn = new WifiConnection(externalWifiId, externalWifiPassword);
+                }
+                else{
+                    Serial.print("USername size = "); Serial.println(externalUsername.length());
+                    WifiConn = new WifiConnection(externalWifiId, externalWifiPassword);
+                }
                 //try connecting to configured access point 
                 // if successfull -> break
                 // else continue
@@ -82,6 +94,7 @@ void WebConfig::displayWebpage(WiFiClient client) {
   client.println("<form action='/save' method='GET'>");
   client.println("<input type='text' name='ssid' placeholder='ssid' /> <br/>");
   client.println("<input type='password' name='password' placeholder='password' /> <br/>");
+  //client.println("<input type='text' name='EAP_USERNAME' placeholder='username' /> <br/>");
   client.println("<input type='submit' value='Save' />");
   client.println("</form>");
   client.println("</body></html>");
@@ -100,8 +113,8 @@ void WebConfig::handleResponse(WiFiClient client){
 
 void WebConfig::handleRequest(WiFiClient client) {
   if(request.indexOf("GET /save") >= 0) {
-    String send_ssid;
-    String send_password;
+    String send_ssid, send_password, send_username;
+    
 
     for(int i=request.indexOf("ssid=")+5; i < request.length(); i++) {
       if(request[i] == '&') break;
@@ -111,9 +124,31 @@ void WebConfig::handleRequest(WiFiClient client) {
       if(request[i] == ' ') break;
       send_password += request[i];
     }
+    
+    for(int i=request.indexOf("EAP_USERNAME=")+9; i < request.length(); i++) {
+      if(request[i] == ' ') break;
+      send_username += request[i];
+    }
+
     send_ssid.replace("%2C",",");
+    send_ssid.replace("+", " ");
+    send_ssid.replace("%40", "@");
+    send_ssid.replace("%21", "!");
+
+    send_password.replace("%2C", ",");
+    send_password.replace("+", " ");
+    send_password.replace("%40", "@");
+    send_password.replace("%21", "!");
+    
+    send_username.replace("%2C", ",");
+    send_username.replace("+", " ");
+    send_username.replace("%40", "@");
+    send_username.replace("%21", "!");
+    
+
     externalWifiId = send_ssid;
     externalWifiPassword = send_password;
+    externalUsername = send_username;
   }
 }
 

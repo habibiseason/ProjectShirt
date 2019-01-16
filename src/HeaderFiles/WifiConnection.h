@@ -1,7 +1,11 @@
 #ifndef WIFI_CONNECTION_H
 #define WIFI_CONNECTION_H
 
+#define WEB_URL "http://kinetic-data.dynu.net/values.php"
+
 #include <Arduino.h>
+#include <WiFi.h>
+#include <HTTPClient.h>
 #include <iostream>
 #include <string>
 
@@ -19,9 +23,11 @@ public:
 
     virtual String getSsid() { return ssid; }
     virtual String getPassword() { return password; }
+    virtual void sendAllSensorData();
 
 private:
     String ssid, password;
+    HTTPClient http;
 };
 
 #endif // WIFI_CONNECTION_H

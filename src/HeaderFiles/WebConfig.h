@@ -8,6 +8,7 @@
 #include <Arduino.h>
 #include <WiFi.h>
 #include "WifiConnection.h"
+#include "WPAconnection.h"
 #include <string>
 
 using namespace std;
@@ -35,6 +36,7 @@ private:
 
 	String externalWifiId;
 	String externalWifiPassword;
+	String externalUsername;	//for WPA
 
 	WiFiServer server;
 	IPAddress ip;

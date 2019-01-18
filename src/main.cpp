@@ -1,15 +1,13 @@
 #include <Arduino.h>
 #include "HeaderFiles/SensorsDefines.h"
 
-#define RSB_THRESHOLD 3800
 
-
-int RSB_value = 0;
+//int RSB_value = 0;
 
 CommonInterface CI;
 
 //setting up wifi connections
-WebConfig *webConf = new WebConfig("Yobobobo", "password");
+WebConfig *webConf = new WebConfig("KineticAnalysis", "password");
 
 
 void setup() {
@@ -31,18 +29,19 @@ void setup() {
   CI.listAllSensors();
   CI.listAllActuators();
   
-  Serial.println("Starting program\n");
+  Serial.println("\nStarting program\n");
 
-  //Start web configuration and store acquired connection in Common Interface
+//Start web configuration and store acquired connection in Common Interface
   CI.addConnection(webConf->startAP());
-  Serial.print("Connected to ");Serial.println(CI.getConnection()->getSsid());
+  Serial.print("Linked to ");Serial.println(CI.getConnection()->getSsid());
   CI.getConnection()->connect();
+
 }
 
 void loop() {
 
 
-  CI.getConnection()->sendAllSensorData();
+  //CI.getConnection()->sendAllSensorData();
   delay(1000);
   /*
   CI.getSensor("CSB1")->getValue();

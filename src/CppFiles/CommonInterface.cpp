@@ -32,6 +32,7 @@ Sensor* CommonInterface::getSensor(string sensorName) {
 	return NULL;
 }
 void CommonInterface::listAllSensors() {
+	cout<< "Listing all sensors:" << endl;
 	for (it_sens = sensors.begin(); it_sens != sensors.end(); it_sens++) {
 		cout<<(*it_sens)->getName()<<endl;
 	}
@@ -64,6 +65,7 @@ Actuator* CommonInterface::getActuator(string actuatorName) {
 }
 
 void CommonInterface::listAllActuators() {
+	cout<< "Listing all actuators:" << endl;
 	for (it_act = actuators.begin(); it_act != actuators.end(); it_act++) {
 		cout << (*it_act)->getName() << endl;
 	}

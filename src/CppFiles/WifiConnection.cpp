@@ -5,7 +5,7 @@ WifiConnection::WifiConnection(String id, String pw): ssid(id), password(pw){
 }
 
 void WifiConnection::connect(){
-    cout<<"Connecting to Access point: "<< getSsid() <<endl;
+    cout<<"Starting connection (normal) with: "<< getSsid() <<endl;
     disconnect();
     WiFi.begin(ssid.c_str(), password.c_str());
     
@@ -14,13 +14,13 @@ void WifiConnection::connect(){
         delay(500);
         Serial.println("Connecting..");
     }
-
-    Serial.println("IP address: ");
-    Serial.println(WiFi.localIP());
+    
+    Serial.print("IP address: ");Serial.println(WiFi.localIP());
+    Serial.print("Connected to :"); Serial.println(getSsid());
 }
 
 void WifiConnection::disconnect(){
-    cout<<"Ending wifi connection with "<< getSsid() <<endl;
+    cout<<"Ending WiFi connection with "<< getSsid() <<endl;
     WiFi.disconnect(true);
     //wait till disconnected
     while(WiFi.status() == WL_CONNECTED) {}

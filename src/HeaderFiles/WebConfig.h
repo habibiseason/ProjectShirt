@@ -2,8 +2,8 @@
 #define WEB_CONFIG_H
 
 #define DEFAULT_PASSWORD	"Admin123"
-#define AP_IP				192,168,1,1
-#define AP_MASK				255,255,255,0
+#define AP_IP				1,1,1,1
+#define AP_MASK				0,0,0,0
 
 #include <Arduino.h>
 #include <WiFi.h>

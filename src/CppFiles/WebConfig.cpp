@@ -72,18 +72,18 @@ void WebConfig::waitForConnection(){
 
                 //check for WPA or normal connection
                 if (externalUsername.length() == 0){    //if username is not filled in -> start normal Wifi Connection
-                    Serial.print("USername size = "); Serial.println(externalUsername.length());
+                    delay(500); //AP page needs a couple ms to update screen
                     WifiConn = new WifiConnection(externalWifiId, externalWifiPassword);
                 }
                 else{   //else start WPA Connection
-                    Serial.print("USername size = "); Serial.println(externalUsername.length());
                     WifiConn = new WPAconnection(externalWifiId, externalWifiPassword, externalUsername);
                 }
+                Serial.print("USername size = "); Serial.println(externalUsername.length());
                 break;
             }
         }
     }
-    cout << "Wifi settings succesfully configured!" << endl;
+    cout << "Wifi settings succesfully configured" << endl;
 }
 
 void WebConfig::displayWebpage(WiFiClient client, bool connectionStat) {
@@ -150,10 +150,8 @@ void WebConfig::handleRequest(WiFiClient client) {
     //check for special characters
     replaceChar();
 
-    //update AP screen
+    //update connection label to show AP screen connected status
     _connection = true;
-    displayWebpage(client, _connection);
-    delay(50);
   }
 }
 

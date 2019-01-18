@@ -14,9 +14,9 @@ void WifiConnection::connect(){
         delay(500);
         Serial.println("Connecting..");
     }
-    
+
     Serial.print("IP address: ");Serial.println(WiFi.localIP());
-    Serial.print("Connected to :"); Serial.println(getSsid());
+    Serial.print("Connected to "); Serial.println(getSsid());
 }
 
 void WifiConnection::disconnect(){

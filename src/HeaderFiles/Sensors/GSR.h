@@ -1,7 +1,7 @@
 #ifndef GSR_H
 #define GSR_H
 
-#include "BasicAnalogSensor.h"
+#include "HeaderFiles/Sensors/BasicAnalogSensor.h"
 
 class GSR: public BasicAnalogSensor
 {

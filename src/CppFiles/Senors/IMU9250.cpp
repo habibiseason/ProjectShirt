@@ -1,4 +1,4 @@
-#include "HeaderFiles/IMU9250.h"
+#include "HeaderFiles/Sensors/IMU9250.h"
 
 
 IMU9250::IMU9250(string n, uint8_t add): I2C_sensor(n, add), i2cAdd(add)

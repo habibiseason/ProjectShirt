@@ -1,7 +1,7 @@
 #ifndef CAPACITIVE_SENSOR_H
 #define CAPACITIVE_SENSOR_H
 
-#include "Sensor.h"
+#include "HeaderFiles/Sensors/Sensor.h"
 
 
 class CapacitiveSensor: public Sensor

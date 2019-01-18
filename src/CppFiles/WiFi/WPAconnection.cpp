@@ -1,4 +1,4 @@
-#include "HeaderFiles/WPAconnection.h"
+#include "HeaderFiles/WiFi/WPAconnection.h"
 
 
 WPAconnection::WPAconnection(String id, String pw, String usrName): WifiConnection(id, pw), EAP_USERNAME(usrName){

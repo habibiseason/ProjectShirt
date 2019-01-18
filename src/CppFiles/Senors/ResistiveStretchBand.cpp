@@ -1,4 +1,4 @@
-#include "HeaderFiles/ResistiveStretchBand.h"
+#include "HeaderFiles/Sensors/ResistiveStretchBand.h"
 
 
 

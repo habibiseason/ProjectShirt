@@ -2,7 +2,7 @@
 #define WPA_CONNECTION_H
 
 #include <esp_wpa2.h>   
-#include "WifiConnection.h"
+#include "HeaderFiles/WiFi/WifiConnection.h"
 
 
 class WPAconnection : public WifiConnection

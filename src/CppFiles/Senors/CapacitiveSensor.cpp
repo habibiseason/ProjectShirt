@@ -1,4 +1,4 @@
-#include "HeaderFiles/CapacitiveSensor.h"
+#include "HeaderFiles/Sensors/CapacitiveSensor.h"
 
 
 CapacitiveSensor::CapacitiveSensor(string n, int pin1, int pin2) : Sensor(n), analogPin1(pin1), analogPin2(pin2)

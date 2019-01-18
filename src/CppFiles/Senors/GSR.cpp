@@ -1,4 +1,4 @@
-#include "HeaderFiles/GSR.h"
+#include "HeaderFiles/Sensors/GSR.h"
 
 
 GSR::GSR(string n, int pin): BasicAnalogSensor(n, pin)

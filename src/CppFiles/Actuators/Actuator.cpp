@@ -1,6 +1,4 @@
-#include "HeaderFiles/Actuator.h"
-
-
+#include "HeaderFiles/Actuators/Actuator.h"
 
 Actuator::Actuator(string n): name(n)
 {

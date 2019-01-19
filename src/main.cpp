@@ -49,7 +49,7 @@ void setup() {
   //Start web configuration and store acquired connection in Common Interface
   
   WifiConnection *wifiConn = webConf->startAP();
-  CI.addConnection(conn);
+  CI.addConnection(wifiConn);
 
   Serial.print("Connected to ");Serial.println(CI.getConnection()->getSsid());
   CI.getConnection()->connect();

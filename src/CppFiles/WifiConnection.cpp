@@ -1,4 +1,5 @@
 #include "HeaderFiles/WifiConnection.h"
+#include "HeaderFiles/CommonInterface.h"
 
 WifiConnection::WifiConnection(String id, String pw): ssid(id), password(pw){
 
@@ -28,33 +29,83 @@ void WifiConnection::disconnect(){
     delay(1000);
 }
 
-void WifiConnection::sendAllSensorData(){
+void WifiConnection::sendAllSensorData(String sensor){
     http.begin(WEB_URL);
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
 
     // Stretchband
-    String body = "type=stretchband&timestamp="+String(millis())+"&value=" + String(10);
-    int code = http.POST(body);
+    int code=-9;
 
-    // IMU
-    body = "type=IMU&imu_id=1&timestamp="+String(millis())+"&x=" + String(20)+ "&y=" +String(21)+ "&z=" + String(22);
-    code = http.POST(body);
-    body = "type=IMU&imu_id=2&timestamp="+String(millis())+"&x=" + String(30)+ "&y=" +String(31)+ "&z=" + String(32);
-    code = http.POST(body);
+    if(sensor.equals("stretch")) {
+        if(!CommonInterface::stretchQueue.empty()) {
+            int size = CommonInterface::stretchQueue.size();
+            String ids = "";
+            String timestamps = "";
+            String values = "";
+            while(!CommonInterface::stretchQueue.empty()) {
+                stretchband_struct data = CommonInterface::stretchQueue.front();
+                ids += String(data.sensorId)+",";
+                timestamps += String(data.timestamp)+",";
+                values += String(data.value)+",";
+                CommonInterface::stretchQueue.pop();
+            }
 
-    // Capacitive
-    body = "type=capacitive&capacitive_id=1&timestamp="+String(millis())+ "&value=" + String(40);
-    code = http.POST(body);
-    body = "type=capacitive&capacitive_id=2&timestamp="+String(millis())+"&value=23";
-    code = http.POST(body);
+            String body = "type=stretchband&stretch_id="+ids+"&timestamp="+timestamps+"&value=" + values;
+            code = http.POST(body);
+        }
+    } else if(sensor.equals("imu")) {
+        if(!CommonInterface::imuQueue.empty()) {
+            int size = CommonInterface::imuQueue.size();
+            String ids = "";
+            String timestamps = "";
+            String x = ""; String y = ""; String z = "";
 
-    // Gsr
-    body = "type=gsr&timestamp="+String(millis())+"&value=" + String(50);
-    code = http.POST(body);
+            while(!CommonInterface::imuQueue.empty()) {
+                imu_struct data = CommonInterface::imuQueue.front();
+                ids += String(data.sensorId) + ",";
+                timestamps += String(data.timestamp) + ",";
+                x += String(data.x) + ","; 
+                y += String(data.y) + ","; 
+                z += String(data.z) + ",";
+                CommonInterface::imuQueue.pop();
+            }
+            String body = "type=IMU&imu_id="+ids+"&timestamp="+timestamps+"&x="+x+"&y="+y+"&z="+z;
+            code = http.POST(body);
+        }
+    } else if(sensor.equals("capacitive")) {
+        if(!CommonInterface::capacitiveQueue.empty()) {
+            int size = CommonInterface::capacitiveQueue.size();
+            String ids = "";
+            String timestamps = "";
+            String values = "";
 
-    Serial.println(code);
-    String response = http.getString();
-    Serial.println(response);
+            while(!CommonInterface::capacitiveQueue.empty()) {
+                capacitive_struct data = CommonInterface::capacitiveQueue.front();
+                ids += String(data.sensorId) + ",";
+                timestamps += String(data.timestamp) + ",";
+                values += String(data.value) + ",";
+                CommonInterface::capacitiveQueue.pop();
+            }
+
+            String body = "type=capacitive&capacitive_id="+ids+"&timestamp="+timestamps+"&value="+values;
+            code = http.POST(body);
+        }
+    } else if(sensor.equals("gsr")) {
+        if(!CommonInterface::gsrQueue.empty()) {
+            int size = CommonInterface::gsrQueue.size();
+            String timestamps = "";
+            String values = "";
+
+            while(!CommonInterface::gsrQueue.empty()) {
+                gsr_struct data = CommonInterface::gsrQueue.front();
+                timestamps += String(data.timestamp) + ",";
+                values += String(data.value) + ",";
+                CommonInterface::gsrQueue.pop();
+            }
+            String body = "type=gsr&timestamp="+timestamps+"&value="+values;
+            code = http.POST(body);
+        }
+    }
 
     http.end();
 }

@@ -1,5 +1,10 @@
 #include "HeaderFiles/CommonInterface.h"
 
+queue<stretchband_struct> CommonInterface::stretchQueue;
+queue<capacitive_struct> CommonInterface::capacitiveQueue;
+queue<gsr_struct> CommonInterface::gsrQueue;
+queue<imu_struct> CommonInterface::imuQueue;
+
 CommonInterface::CommonInterface()
 {
 }

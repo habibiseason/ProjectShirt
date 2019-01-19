@@ -1,5 +1,5 @@
 #include "HeaderFiles/IMU9250.h"
-
+#include "HeaderFiles/CommonInterface.h"
 
 IMU9250::IMU9250(string n, uint8_t add): I2C_sensor(n, add), i2cAdd(add)
 {
@@ -31,10 +31,20 @@ int IMU9250::getValue() {
     GyY1 = Wire.read() << 8 | Wire.read(); // 0x45 (GYRO_YOUT_H) & 0x46 (GYRO_YOUT_L)
     GyZ1 = Wire.read() << 8 | Wire.read(); // 0x47 (GYRO_ZOUT_H) & 0x48 (GYRO_ZOUT_L)
 
-  cout<<getName()<< ":"<<endl;
-  Serial.print("GyX = "); Serial.print(GyX1);
-  Serial.print("\tGyY = "); Serial.print(GyY1);
-  Serial.print("\tGyZ = "); Serial.println(GyZ1);
+  //cout<<getName()<< ":"<<endl;
+  //Serial.print("GyX = "); Serial.print(GyX1);
+  //Serial.print("\tGyY = "); Serial.print(GyY1);
+  //Serial.print("\tGyZ = "); Serial.println(GyZ1);
+
+  struct imu_struct strct = {
+    .sensorId = (getName() == "IMU1") ? 1 : 2,
+    .timestamp = millis(),
+    .x = GyX1,
+    .y = GyY1,
+    .z = GyZ1,
+  };
+
+  CommonInterface::imuQueue.push(strct);
 	
 	return 5;
 }

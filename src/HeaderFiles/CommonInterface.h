@@ -4,7 +4,31 @@
 #include "Sensor.h"
 #include "Actuator.h"
 #include "WifiConnection.h"
+#include <queue>
 #include <list>
+
+struct capacitive_struct {
+	int sensorId;
+	int timestamp;
+	int value;
+};
+
+struct stretchband_struct {
+	int sensorId;
+	int timestamp;
+	int value;
+};
+
+struct imu_struct {
+	int sensorId;
+	int timestamp;
+	int x, y, z;
+};
+
+struct gsr_struct {
+	int timestamp;
+	int value;
+};
 
 class CommonInterface
 {
@@ -25,6 +49,11 @@ public:
 	virtual void addConnection(WifiConnection* conn);
 	virtual void removeConnection();
 	virtual WifiConnection* getConnection();
+
+	static queue<stretchband_struct> stretchQueue;
+	static queue<capacitive_struct> capacitiveQueue;
+	static queue<gsr_struct> gsrQueue;
+	static queue<imu_struct> imuQueue;
 
 private:
 	list<Sensor*> sensors;

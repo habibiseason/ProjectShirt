@@ -1,5 +1,5 @@
 #include "HeaderFiles/CapacitiveSensor.h"
-
+#include "HeaderFiles/CommonInterface.h"
 
 CapacitiveSensor::CapacitiveSensor(string n, int pin1, int pin2) : Sensor(n), analogPin1(pin1), analogPin2(pin2)
 {
@@ -21,7 +21,7 @@ int CapacitiveSensor::getValue() {
 	float R_PULLUP = 34.8; 
 	float capacitance;
  	int MAX_ADC_VALUE = 4095;  //2^12
-	cout << "Capacitive data incomming...\n";
+	//cout << "Capacitive data incomming...\n";
 
 	pinMode(IN_PIN, INPUT);
     digitalWrite(OUT_PIN, HIGH);
@@ -35,8 +35,8 @@ int CapacitiveSensor::getValue() {
 
       float capacitance = (float)val * IN_CAP_TO_GND / (float)(MAX_ADC_VALUE - val);
 
-      Serial.print(F("Capacitance Value = "));
-      Serial.println(capacitance, 3);
+      //Serial.print(F("Capacitance Value = "));
+      //Serial.println(capacitance, 3);
     }
     else
     {
@@ -66,18 +66,26 @@ int CapacitiveSensor::getValue() {
       capacitance = -(float)t / R_PULLUP
                               / log(1.0 - (float)val / (float)MAX_ADC_VALUE);
 
-      Serial.print(F("Capacitance Value = "));
+      //Serial.print(F("Capacitance Value = "));
       if (capacitance > 1000.0)
       {
-        Serial.print(capacitance / 1000.0, 2);
-        Serial.print(F(" uF"));
+        //Serial.print(capacitance / 1000.0, 2);
+        //Serial.print(F(" uF"));
       }
       else
       {
-        Serial.print(capacitance, 2);
-        Serial.println(F(" nF"));
+        //Serial.print(capacitance, 2);
+        //Serial.println(F(" nF"));
       }
     }
+
+    struct capacitive_struct strct = {
+        .sensorId = (getName() == "CSB1") ? 1:2,
+        .timestamp = millis(),
+        .value = capacitance,
+    };
+
+    CommonInterface::capacitiveQueue.push(strct);
 
 	return capacitance;
 }

@@ -23,7 +23,7 @@ public:
 
     virtual String getSsid() { return ssid; }
     virtual String getPassword() { return password; }
-    virtual void sendAllSensorData();
+    virtual void sendAllSensorData(String sensor);
 
 private:
     String ssid, password;

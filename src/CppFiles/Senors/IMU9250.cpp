@@ -1,4 +1,4 @@
-#include "HeaderFiles/IMU9250.h"
+#include "HeaderFiles/Sensors/IMU9250.h"
 #include "HeaderFiles/CommonInterface.h"
 
 IMU9250::IMU9250(string n, uint8_t add): I2C_sensor(n, add), i2cAdd(add)
@@ -35,16 +35,19 @@ int IMU9250::getValue() {
   //Serial.print("GyX = "); Serial.print(GyX1);
   //Serial.print("\tGyY = "); Serial.print(GyY1);
   //Serial.print("\tGyZ = "); Serial.println(GyZ1);
+  
+  if((millis() - counter) > getDelay()) {
+      counter = millis();
+      struct imu_struct strct = {
+        .sensorId = (getName() == "IMU1") ? 1 : 2,
+        .timestamp = millis(),
+        .x = GyX1,
+        .y = GyY1,
+        .z = GyZ1,
+      };
 
-  struct imu_struct strct = {
-    .sensorId = (getName() == "IMU1") ? 1 : 2,
-    .timestamp = millis(),
-    .x = GyX1,
-    .y = GyY1,
-    .z = GyZ1,
-  };
-
-  CommonInterface::imuQueue.push(strct);
+      CommonInterface::imuQueue.push(strct);
+  }
 	
 	return 5;
 }

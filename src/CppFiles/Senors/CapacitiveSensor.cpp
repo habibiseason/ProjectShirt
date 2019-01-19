@@ -1,4 +1,4 @@
-#include "HeaderFiles/CapacitiveSensor.h"
+#include "HeaderFiles/Sensors/CapacitiveSensor.h"
 #include "HeaderFiles/CommonInterface.h"
 
 CapacitiveSensor::CapacitiveSensor(string n, int pin1, int pin2) : Sensor(n), analogPin1(pin1), analogPin2(pin2)
@@ -79,13 +79,16 @@ int CapacitiveSensor::getValue() {
       }
     }
 
-    struct capacitive_struct strct = {
+    if((millis() - counter) > getDelay()) {
+      counter = millis();
+      struct capacitive_struct strct = {
         .sensorId = (getName() == "CSB1") ? 1:2,
         .timestamp = millis(),
         .value = capacitance,
-    };
+      };
 
-    CommonInterface::capacitiveQueue.push(strct);
+      CommonInterface::capacitiveQueue.push(strct);
+    }
 
 	return capacitance;
 }

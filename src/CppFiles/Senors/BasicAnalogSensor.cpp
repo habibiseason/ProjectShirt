@@ -1,4 +1,4 @@
-#include "HeaderFiles/BasicAnalogSensor.h"
+#include "HeaderFiles/Sensors/BasicAnalogSensor.h"
 
 
 

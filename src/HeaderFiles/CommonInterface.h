@@ -1,9 +1,9 @@
 #ifndef COMMON_INTERFACE_H
 #define COMMON_INTERFACE_H
 
-#include "Sensor.h"
-#include "Actuator.h"
-#include "WifiConnection.h"
+#include "HeaderFiles/Sensors/Sensor.h"
+#include "HeaderFiles/Actuators/Actuator.h"
+#include "HeaderFiles/WiFi/WifiConnection.h"
 #include <queue>
 #include <list>
 

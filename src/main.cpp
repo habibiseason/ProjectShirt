@@ -1,14 +1,13 @@
 #include <Arduino.h>
-#include "HeaderFiles/SensorsDefines.h"
 #include "FreeRTOS.h"
 #include "esp_system.h"
+#include "HeaderFiles/CommonInterfaceDefines.h"
 
 #define RSB_THRESHOLD 3800
-#define DATA_UPLOAD_DELAY 5000
-#define SENSOR_UPDATE_DELAY 250
+#define DATA_UPLOAD_DELAY 0
 
 
-int RSB_value = 0;
+//int RSB_value = 0;
 
 CommonInterface CI;
 
@@ -29,6 +28,14 @@ void setup() {
   CI.addSensor(new IMU9250("IMU1", IMU1_ADD));
   CI.addSensor(new IMU9250("IMU2", IMU2_ADD));
 
+  CI.getSensor("RSB1")->setDelay(100);
+  CI.getSensor("RSB2")->setDelay(100);
+  CI.getSensor("IMU1")->setDelay(200);
+  CI.getSensor("IMU2")->setDelay(200);
+  CI.getSensor("CSB1")->setDelay(200);
+  CI.getSensor("CSB2")->setDelay(200);
+  CI.getSensor("GSR")->setDelay(1000);
+
 //adding all actuators
   CI.addActuator(new DigitalControlActuator("VibMotor1", MOTOR1_pin));
 	CI.addActuator(new DigitalControlActuator("VibMotor2", MOTOR2_pin));
@@ -37,20 +44,22 @@ void setup() {
   CI.listAllSensors();
   CI.listAllActuators();
   
-  Serial.println("Starting program\n");
+  Serial.println("\nStarting program\n");
 
   //Start web configuration and store acquired connection in Common Interface
   WifiConnection *conn = new WifiConnection("devolo-30d32d585e37", "PNESQLXOPRMOKHVJ");
+  //WifiConnection *wifiConn = webConf->startAP();
   CI.addConnection(conn);
 
   Serial.print("Connected to ");Serial.println(CI.getConnection()->getSsid());
   CI.getConnection()->connect();
 
-  xTaskCreate(sendTask, "wifi_task", CONFIG_MAIN_TASK_STACK_SIZE, NULL, 5, NULL);
+  xTaskCreate(sendTask, "wifi_task", CONFIG_MAIN_TASK_STACK_SIZE, NULL, 0, NULL);
 }
 
 void sendTask(void* pvParameters) {
   while(true) {
+    Serial.println(CI.stretchQueue.size());
     CI.getConnection()->sendAllSensorData("stretch");
     CI.getConnection()->sendAllSensorData("capacitive");
     CI.getConnection()->sendAllSensorData("gsr");
@@ -69,7 +78,7 @@ void loop() {
   CI.getSensor("CSB2")->getValue();
   CI.getSensor("GSR")->getValue();
 
-  delay(SENSOR_UPDATE_DELAY);
+  delay(10);
   /*
   CI.getSensor("CSB1")->getValue();
   CI.getSensor("GSR")->getValue();

@@ -1,7 +1,7 @@
 #ifndef BASIC_ANALOG_SENSOR_H
 #define BASIC_ANALOG_SENSOR_H
 
-#include "Sensor.h"
+#include "HeaderFiles/Sensors/Sensor.h"
 
 class BasicAnalogSensor: public Sensor
 {

@@ -47,9 +47,9 @@ void setup() {
   Serial.println("\nStarting program\n");
 
   //Start web configuration and store acquired connection in Common Interface
-  WifiConnection *conn = new WifiConnection("devolo-30d32d585e37", "PNESQLXOPRMOKHVJ");
-  //WifiConnection *wifiConn = webConf->startAP();
-  CI.addConnection(conn);
+
+  WifiConnection *wifiConn = webConf->startAP();
+  CI.addConnection(wifiConn);
 
   Serial.print("Connected to ");Serial.println(CI.getConnection()->getSsid());
   CI.getConnection()->connect();

@@ -47,9 +47,9 @@ void setup() {
   Serial.println("\nStarting program\n");
 
   //Start web configuration and store acquired connection in Common Interface
-
+  
   WifiConnection *wifiConn = webConf->startAP();
-  CI.addConnection(wifiConn);
+  CI.addConnection(conn);
 
   Serial.print("Connected to ");Serial.println(CI.getConnection()->getSsid());
   CI.getConnection()->connect();
@@ -59,12 +59,13 @@ void setup() {
 
 void sendTask(void* pvParameters) {
   while(true) {
-    Serial.println(CI.stretchQueue.size());
-    CI.getConnection()->sendAllSensorData("stretch");
-    CI.getConnection()->sendAllSensorData("capacitive");
-    CI.getConnection()->sendAllSensorData("gsr");
-    CI.getConnection()->sendAllSensorData("imu");
-    vTaskDelay(DATA_UPLOAD_DELAY/portTICK_RATE_MS);
+    if(WiFi.status() == WL_CONNECTED) {
+      Serial.println(CI.stretchQueue.size());
+      CI.getConnection()->sendAllSensorData("stretch");
+      CI.getConnection()->sendAllSensorData("capacitive");
+      CI.getConnection()->sendAllSensorData("gsr");
+      CI.getConnection()->sendAllSensorData("imu");
+    }
   }
 }
 

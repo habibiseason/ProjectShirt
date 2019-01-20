@@ -1,6 +1,7 @@
 #include "HeaderFiles/Sensors/CapacitiveSensor.h"
 #include "HeaderFiles/CommonInterface.h"
 
+
 CapacitiveSensor::CapacitiveSensor(string n, int pin1, int pin2) : Sensor(n), analogPin1(pin1), analogPin2(pin2)
 {
 	initSensor();
@@ -14,8 +15,8 @@ void CapacitiveSensor::initSensor() {
 
 int CapacitiveSensor::getValue() {
 	//insert capacitive measuring code
-	int OUT_PIN = 32;
-	int IN_PIN = 33;
+	int OUT_PIN = analogPin1;
+	int IN_PIN = analogPin2;
 	float IN_STRAY_CAP_TO_GND = 24.48;
 	float IN_CAP_TO_GND = IN_STRAY_CAP_TO_GND;
 	float R_PULLUP = 34.8; 
@@ -66,6 +67,7 @@ int CapacitiveSensor::getValue() {
       capacitance = -(float)t / R_PULLUP
                               / log(1.0 - (float)val / (float)MAX_ADC_VALUE);
 
+      capacitance *= CAPACITANCE_MULTIPLIER;
       //Serial.print(F("Capacitance Value = "));
       if (capacitance > 1000.0)
       {

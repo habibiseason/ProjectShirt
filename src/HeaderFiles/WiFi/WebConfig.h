@@ -3,7 +3,7 @@
 
 #define DEFAULT_PASSWORD	"Admin123"
 #define AP_IP				1,1,1,1
-#define AP_MASK				0,0,0,0
+#define AP_MASK				255,255,0,0
 
 #define SPECIAL_CHAR_BUFF	35
 

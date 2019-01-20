@@ -6,12 +6,13 @@
 class ResistiveStretchBand: public BasicAnalogSensor
 {
 public:
-	ResistiveStretchBand(string n, int pin);
+	ResistiveStretchBand(string n, int pin, int mPin, int mValue);
 	virtual ~ResistiveStretchBand() {}
 
 	virtual int getValue();
 
 private:
+int muxPin, muxValue;
 
 };
 

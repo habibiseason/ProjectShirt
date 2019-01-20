@@ -2,12 +2,14 @@
 #include "HeaderFiles/CommonInterface.h"
 
 
-ResistiveStretchBand::ResistiveStretchBand(string n, int pin): BasicAnalogSensor(n, pin)
+ResistiveStretchBand::ResistiveStretchBand(string n, int pin, int mPin, int mValue): BasicAnalogSensor(n, pin), muxPin(mPin), muxValue(mValue)
 {
+	pinMode(muxPin, OUTPUT);
 	initSensor();
 }
 
 int ResistiveStretchBand::getValue() {
+	digitalWrite(muxPin, muxValue);
 	int value = analogRead(getAnalogPin());
 	//cout << "Resisitve stretch band data incomming from pin " << getAnalogPin() << ": "<< value << endl;
 	if((millis() - counter) > getDelay()) {

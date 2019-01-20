@@ -34,6 +34,7 @@
 
 #define HB_LED_PIN  23
 
+#define MUX_PIN     5
 
 #endif // !COMMON_INTERFACE_DEFINES_H
 

@@ -3,6 +3,8 @@
 
 #include "HeaderFiles/Sensors/Sensor.h"
 
+#define CAPACITANCE_MULTIPLIER  100	//multiplier needed because change in capacitance is very small
+
 
 class CapacitiveSensor: public Sensor
 {

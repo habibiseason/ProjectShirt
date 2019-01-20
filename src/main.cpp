@@ -21,8 +21,8 @@ void setup() {
 
 //adding all sensors
   CI.addSensor(new GSR("GSR", GSR_PIN));
-  CI.addSensor(new ResistiveStretchBand("RSB1", RSB_PIN));
-  CI.addSensor(new ResistiveStretchBand("RSB2", RSB_PIN));
+  CI.addSensor(new ResistiveStretchBand("RSB1", RSB_PIN, MUX_PIN, 1));
+  CI.addSensor(new ResistiveStretchBand("RSB2", RSB_PIN, MUX_PIN, 0));
   CI.addSensor(new CapacitiveSensor("CSB1", CSB1_PINA, CSB1_PINB));
   CI.addSensor(new CapacitiveSensor("CSB2", CSB2_PINA, CSB2_PINB));
   CI.addSensor(new IMU9250("IMU1", IMU1_ADD));
@@ -46,7 +46,7 @@ void setup() {
   
   Serial.println("\nStarting program\n");
 
-  //Start web configuration and store acquired connection in Common Interface
+  /*Start web configuration and store acquired connection in Common Interface
   
   WifiConnection *wifiConn = webConf->startAP();
   CI.addConnection(wifiConn);
@@ -54,7 +54,8 @@ void setup() {
   Serial.print("Connected to ");Serial.println(CI.getConnection()->getSsid());
   CI.getConnection()->connect();
 
-  xTaskCreate(sendTask, "wifi_task", CONFIG_MAIN_TASK_STACK_SIZE, NULL, 0, NULL);
+  //xTaskCreate(sendTask, "wifi_task", CONFIG_MAIN_TASK_STACK_SIZE, NULL, 0, NULL);
+  //  */
 }
 
 void sendTask(void* pvParameters) {
@@ -70,7 +71,8 @@ void sendTask(void* pvParameters) {
 }
 
 void loop() {
-
+  
+  /*
   CI.getSensor("RSB1")->getValue();
   CI.getSensor("RSB2")->getValue();
   CI.getSensor("IMU1")->getValue();
@@ -78,8 +80,18 @@ void loop() {
   CI.getSensor("CSB1")->getValue();
   CI.getSensor("CSB2")->getValue();
   CI.getSensor("GSR")->getValue();
+  */
+  //*
+  //Serial.print("RSB1: ");Serial.println(CI.getSensor("RSB1")->getValue());
+  //Serial.print("RSB2: ");Serial.println(CI.getSensor("RSB2")->getValue());
+  //Serial.print("IMU1: ");Serial.println(CI.getSensor("IMU1")->getValue());
+  //Serial.print("IMU2: ");Serial.println(CI.getSensor("IMU2")->getValue());
+  Serial.print("CSB1: ");Serial.println(CI.getSensor("CSB1")->getValue());
+  Serial.print("CSB2: ");Serial.println(CI.getSensor("CSB2")->getValue());
+  Serial.print("GSR: ");Serial.println(CI.getSensor("GSR")->getValue());
+  //  */
 
-  delay(10);
+  delay(500);
   /*
   CI.getSensor("CSB1")->getValue();
   CI.getSensor("GSR")->getValue();

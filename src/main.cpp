@@ -12,7 +12,8 @@
 CommonInterface CI;
 
 //setting up wifi connections
-WebConfig *webConf = new WebConfig("Shirt", "password");
+WebConfig *webConf = new WebConfig("Kinetic Analysis", "password");
+
 
 void sendTask(void* pvParameters);
 
@@ -46,15 +47,14 @@ void setup() {
   
   Serial.println("\nStarting program\n");
 
-  /*Start web configuration and store acquired connection in Common Interface
-  
+  //*Start web configuration and store acquired connection in Common Interface
   WifiConnection *wifiConn = webConf->startAP();
   CI.addConnection(wifiConn);
 
   Serial.print("Connected to ");Serial.println(CI.getConnection()->getSsid());
   CI.getConnection()->connect();
 
-  //xTaskCreate(sendTask, "wifi_task", CONFIG_MAIN_TASK_STACK_SIZE, NULL, 0, NULL);
+  xTaskCreate(sendTask, "wifi_task", CONFIG_MAIN_TASK_STACK_SIZE, NULL, 0, NULL);
   //  */
 }
 
@@ -71,27 +71,18 @@ void sendTask(void* pvParameters) {
 }
 
 void loop() {
-  
-  /*
-  CI.getSensor("RSB1")->getValue();
-  CI.getSensor("RSB2")->getValue();
-  CI.getSensor("IMU1")->getValue();
-  CI.getSensor("IMU2")->getValue();
-  CI.getSensor("CSB1")->getValue();
-  CI.getSensor("CSB2")->getValue();
-  CI.getSensor("GSR")->getValue();
-  */
+
   //*
-  //Serial.print("RSB1: ");Serial.println(CI.getSensor("RSB1")->getValue());
-  //Serial.print("RSB2: ");Serial.println(CI.getSensor("RSB2")->getValue());
-  //Serial.print("IMU1: ");Serial.println(CI.getSensor("IMU1")->getValue());
-  //Serial.print("IMU2: ");Serial.println(CI.getSensor("IMU2")->getValue());
+  Serial.print("RSB1: ");Serial.println(CI.getSensor("RSB1")->getValue());
+  Serial.print("RSB2: ");Serial.println(CI.getSensor("RSB2")->getValue());
+  Serial.print("IMU1: ");Serial.println(CI.getSensor("IMU1")->getValue());
+  Serial.print("IMU2: ");Serial.println(CI.getSensor("IMU2")->getValue());
   Serial.print("CSB1: ");Serial.println(CI.getSensor("CSB1")->getValue());
   Serial.print("CSB2: ");Serial.println(CI.getSensor("CSB2")->getValue());
   Serial.print("GSR: ");Serial.println(CI.getSensor("GSR")->getValue());
+  delay(100);
   //  */
-
-  delay(500);
+  
   /*
   CI.getSensor("CSB1")->getValue();
   CI.getSensor("GSR")->getValue();

@@ -7,8 +7,6 @@
 #define DATA_UPLOAD_DELAY 0
 
 
-//int RSB_value = 0;
-
 CommonInterface CI;
 
 //setting up wifi connections
@@ -16,6 +14,8 @@ WebConfig *webConf = new WebConfig("Kinetic Analysis", "password");
 
 
 void sendTask(void* pvParameters);
+
+
 
 void setup() {
   Serial.begin(9600);
@@ -54,6 +54,7 @@ void setup() {
   Serial.print("Connected to ");Serial.println(CI.getConnection()->getSsid());
   CI.getConnection()->connect();
 
+  //create and start FreeRTOS task for sending the data
   xTaskCreate(sendTask, "wifi_task", CONFIG_MAIN_TASK_STACK_SIZE, NULL, 0, NULL);
   //  */
 }
@@ -72,7 +73,7 @@ void sendTask(void* pvParameters) {
 
 void loop() {
 
-  //*
+  //* reading and writing sensordata to the queue
   Serial.print("RSB1: ");Serial.println(CI.getSensor("RSB1")->getValue());
   Serial.print("RSB2: ");Serial.println(CI.getSensor("RSB2")->getValue());
   Serial.print("IMU1: ");Serial.println(CI.getSensor("IMU1")->getValue());
@@ -82,18 +83,4 @@ void loop() {
   Serial.print("GSR: ");Serial.println(CI.getSensor("GSR")->getValue());
   delay(100);
   //  */
-  
-  /*
-  CI.getSensor("CSB1")->getValue();
-  CI.getSensor("GSR")->getValue();
-  RSB_value = CI.getSensor("RSB")->getValue();
-
-  if (RSB_value >= RSB_THRESHOLD){
-    ((DigitalControlActuator*)CI.getActuator("HearthBeatLED"))->power(ON);
-    ((DigitalControlActuator*)CI.getActuator("VibMotor2"))->power(ON);
-  }else{
-    ((DigitalControlActuator*)CI.getActuator("HearthBeatLED"))->power(OFF);
-    ((DigitalControlActuator*)CI.getActuator("VibMotor2"))->power(OFF);
-  }*/
-  
 }
